@@ -4,14 +4,16 @@ using ABPCommerce.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ABPCommerce.Migrations
 {
     [DbContext(typeof(ABPCommerceDbContext))]
-    partial class ABPCommerceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211123123937_InitialProduct")]
+    partial class InitialProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
