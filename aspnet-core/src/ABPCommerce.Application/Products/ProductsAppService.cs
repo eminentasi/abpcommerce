@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services;
+using Abp.Application.Services.Dto;
 using Abp.Domain.Repositories;
 using ABPCommerce.Catalog.Product;
 using ABPCommerce.Products.Dto;
@@ -18,6 +19,19 @@ namespace ABPCommerce.Products
         public ProductsAppService(IRepository<Product> productRepository)
         {
             _productRepository = productRepository;
+        }
+
+        public async Task<ListResultDto<ProductListDto>> GetProducts()
+        {
+            var products = await _productRepository.GetAllIncluding(p => p.Translations).ToListAsync();
+            return new ListResultDto<ProductListDto>(ObjectMapper.Map<List<ProductListDto>>(products));
+        }
+        public async Task<ProductDto> GetProduct(int id)
+        {
+            var product = await _productRepository.GetAllIncluding(p => p.Translations)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            return ObjectMapper.Map<ProductDto>(product);
         }
 
         public async Task CreateProduct(ProductDto input)
