@@ -4,6 +4,7 @@ using ABPCommerce.Authorization.Roles;
 using ABPCommerce.Authorization.Users;
 using ABPCommerce.MultiTenancy;
 using ABPCommerce.Catalog.Product;
+using ABPCommerce.OrderManagement.Order;
 
 namespace ABPCommerce.EntityFrameworkCore
 {
@@ -11,6 +12,8 @@ namespace ABPCommerce.EntityFrameworkCore
     {
         /* Define a DbSet for each entity of the application */
         public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
 
         public ABPCommerceDbContext(DbContextOptions<ABPCommerceDbContext> options)
             : base(options)
