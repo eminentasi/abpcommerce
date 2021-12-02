@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AppRoutingModule } from './app-routing.module';
@@ -87,6 +88,7 @@ import { EditProductDialogComponent } from './products/edit-product/edit-product
     BsDropdownModule,
     CollapseModule,
     TabsModule,
+    AccordionModule.forRoot(),
     AppRoutingModule,
     ServiceProxyModule,
     SharedModule,

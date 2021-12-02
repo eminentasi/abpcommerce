@@ -11,52 +11,53 @@
   <div class="modal-body">
     <div class="form-group row required">
       <label class="col-md-3 col-form-label" for="Name">
-        {{ "TenancyName" | localize }}
+        {{ "Price" | localize }}
       </label>
       <div class="col-md-9">
         <input
-          type="text"
+          type="number"
           class="form-control"
-          name="Name"
-          id="Name"
-          minlength="2"
-          maxlength="64"
+          name="Price"
+          id="Price"
+          min="0"
           required
           [(ngModel)]="product.price"
-          #NameModel="ngModel"
-          #NameEl
+          #PriceModel="ngModel"
+          #PriceEl
         />
         <abp-validation-summary
-          [control]="NameModel"
-          [controlEl]="NameEl"
+          [control]="PriceModel"
+          [controlEl]="PriceEl"
         ></abp-validation-summary>
       </div>
     </div>
-    <div class="form-group row required">
-      <label class="col-md-3 col-form-label" for="name">
-        {{ "Name" | localize }}
-      </label>
-      <div class="col-md-9">
-        <input
-          type="text"
-          class="form-control"
-          name="name"
-          id="name"
-          maxlength="128"
-          required
-          [(ngModel)]="product.price"
-          #nameModel="ngModel"
-          #nameEl
-        />
-        <abp-validation-summary
-          [control]="nameModel"
-          [controlEl]="nameEl"
-        ></abp-validation-summary>
-      </div>
-    </div>
-    <p class="text-center text-info mb-0">
-      {{ "DefaultPasswordIs" | localize: "123qwe" }}
-    </p>
+    <accordion>
+      <accordion-group *ngFor="let language of languages">
+        <button
+          class="btn btn-link btn-block justify-content-between d-flex w-100  shadow-none"
+          accordion-heading type="button">
+          <div class="pull-left float-left">
+            <i class="d-inline-block {{ language.icon }} mr-1"></i>
+            {{ language.displayName }}
+          </div>
+        </button>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" [for]="language.name + '_name'">
+            {{ "Name" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              [name]="language.name + '_name'"
+              [id]="language.name + '_name'"
+              maxlength="128"
+              [(ngModel)]="langTranslation[language.name].name"
+            />
+          </div>
+        </div>
+      </accordion-group>
+    </accordion>
   </div>
   <abp-modal-footer
     [cancelDisabled]="saving"
