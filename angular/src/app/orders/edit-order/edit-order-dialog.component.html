@@ -1,0 +1,39 @@
+<form
+  class="form-horizontal"
+  autocomplete="off"
+  #editOrderForm="ngForm"
+  (ngSubmit)="save()"
+>
+  <abp-modal-header
+    [title]="'EditOrder' | localize"
+    (onCloseClick)="bsModalRef.hide()"
+  ></abp-modal-header>
+  <div class="modal-body">
+    <div class="form-group row required">
+      <label class="col-md-3 col-form-label" for="Name">
+        {{ "OrderDate" | localize }}
+      </label>
+      <div class="col-md-9">
+        <input
+          type="datetime"
+          class="form-control"
+          name="OrderDate"
+          id="OrderDate"
+          required
+          [(ngModel)]="order.orderDate"
+          #OrderDateModel="ngModel"
+          #OrderDateEl
+        />
+        <abp-validation-summary
+          [control]="OrderDateModel"
+          [controlEl]="OrderDateEl"
+        ></abp-validation-summary>
+      </div>
+    </div>
+  </div>
+  <abp-modal-footer
+    [cancelDisabled]="saving"
+    [saveDisabled]="!editOrderForm.form.valid || saving"
+    (onCancelClick)="bsModalRef.hide()"
+  ></abp-modal-footer>
+</form>
