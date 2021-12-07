@@ -12,47 +12,46 @@ using System.Threading.Tasks;
 
 namespace ABPCommerce.Products
 {
-    public class ProductsAppService : ApplicationService, IProductsAppService
+    public class ProductsAppService : AsyncCrudAppService<Product, ProductDto, int, PagedProductResultRequestDto>, IProductsAppService
     {
-        private readonly IRepository<Product> _productRepository;
+        private readonly IRepository<Product> _repository;
 
-        public ProductsAppService(IRepository<Product> productRepository)
+        public ProductsAppService(IRepository<Product> repository)
+            : base(repository)
         {
-            _productRepository = productRepository;
+            _repository = repository;
         }
 
-        public async Task<ListResultDto<ProductListDto>> GetProducts()
+        public override async Task<PagedResultDto<ProductDto>> GetAllAsync(PagedProductResultRequestDto input)
         {
-            var products = await _productRepository.GetAllIncluding(p => p.Translations).ToListAsync();
-            return new ListResultDto<ProductListDto>(ObjectMapper.Map<List<ProductListDto>>(products));
-        }
-        public async Task<ProductDto> GetProduct(int id)
-        {
-            var product = await _productRepository.GetAllIncluding(p => p.Translations)
-                .FirstOrDefaultAsync(p => p.Id == id);
+            var query = _repository.GetAllIncluding(p => p.Translations);
 
+            if (!string.IsNullOrEmpty(input.Keyword))
+            {
+                query = query.Where(p => p.Translations.Any(p => p.Name.Contains(input.Keyword)));
+            }
+
+            var products = await query.Skip(input.SkipCount).Take(input.MaxResultCount).ToListAsync();
+
+            return new PagedResultDto<ProductDto>(await query.CountAsync(), ObjectMapper.Map<List<ProductDto>>(products));
+        }
+
+        public override async Task<ProductDto> GetAsync(EntityDto<int> input)
+        {
+            var product = await _repository.GetAllIncluding(p => p.Translations).FirstOrDefaultAsync(p => p.Id == input.Id);
             return ObjectMapper.Map<ProductDto>(product);
         }
 
-        public async Task CreateProduct(ProductDto input)
+        public override async Task<ProductDto> UpdateAsync(ProductDto input)
         {
-            var product = ObjectMapper.Map<Product>(input);
-            await _productRepository.InsertAsync(product);
-        }
-
-        public async Task UpdateProduct(ProductDto input)
-        {
-            var product = await _productRepository.GetAllIncluding(p => p.Translations)
+            var product = await _repository.GetAllIncluding(p => p.Translations)
                 .FirstOrDefaultAsync(p => p.Id == input.Id);
 
             product.Translations.Clear();
 
             ObjectMapper.Map(input, product);
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            await _productRepository.DeleteAsync(id);
+            await _repository.UpdateAsync(product);
+            return ObjectMapper.Map<ProductDto>(product);
         }
     }
 }

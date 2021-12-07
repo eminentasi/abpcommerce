@@ -4,12 +4,12 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import {
   PagedListingComponentBase,
-  PagedRequestDto,
+  PagedRequestDto
 } from '@shared/paged-listing-component-base';
 import {
+  ProductDto,
   ProductsServiceProxy,
-  ProductListDto,
-  ProductListDtoListResultDto,
+  ProductDtoPagedResultDto
 } from '@shared/service-proxies/service-proxies';
 import { CreateProductDialogComponent } from './create-product/create-product-dialog.component';
 import { EditProductDialogComponent } from './edit-product/edit-product-dialog.component';
@@ -23,8 +23,8 @@ class PagedProductsRequestDto extends PagedRequestDto {
   templateUrl: './products.component.html',
   animations: [appModuleAnimation()]
 })
-export class ProductsComponent extends PagedListingComponentBase<ProductListDto> {
-  products: ProductListDto[] = [];
+export class ProductsComponent extends PagedListingComponentBase<ProductDto> {
+  products: ProductDto[] = [];
   keyword = '';
   isActive: boolean | null;
   advancedFiltersVisible = false;
@@ -46,20 +46,23 @@ export class ProductsComponent extends PagedListingComponentBase<ProductListDto>
     request.isActive = this.isActive;
 
     this._productService
-      .getProducts(
+      .getAll(
+        request.keyword,
+        request.skipCount,
+        request.maxResultCount
       )
       .pipe(
         finalize(() => {
           finishedCallback();
         })
       )
-      .subscribe((result: ProductListDtoListResultDto) => {
+      .subscribe((result: ProductDtoPagedResultDto) => {
         this.products = result.items;
-        //this.showPaging(result, pageNumber);
+        this.showPaging(result, pageNumber);
       });
   }
 
-  delete(product: ProductListDto): void {
+  delete(product: ProductDto): void {
     abp.message.confirm(
       this.l('ProductDeleteWarningMessage', product.id),
       undefined,
@@ -83,7 +86,7 @@ export class ProductsComponent extends PagedListingComponentBase<ProductListDto>
     this.showCreateOrEditProductDialog();
   }
 
-  editProduct(product: ProductListDto): void {
+  editProduct(product: ProductDto): void {
     this.showCreateOrEditProductDialog(product.id);
   }
 

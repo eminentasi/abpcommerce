@@ -9,7 +9,7 @@ namespace ABPCommerce.Products.Mapping
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration, MultiLingualMapContext context)
         {
-            configuration.CreateMultiLingualMap<Product, ProductTranslation, ProductListDto>(context).EntityMap
+            configuration.CreateMultiLingualMap<Product, ProductTranslation, ProductDto>(context).EntityMap
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
         }
     }

@@ -57,7 +57,7 @@ export class CreateProductDialogComponent extends AppComponentBase
       } 
     }).filter(el => el);
     
-    this._productService.createProduct(this.product).subscribe(
+    this._productService.create(this.product).subscribe(
       () => {
         this.notify.info(this.l('SavedSuccessfully'));
         this.bsModalRef.hide();

@@ -40,7 +40,7 @@ export class EditProductDialogComponent extends AppComponentBase
       this.localization.languages,
       (l) => !l.isDisabled
     );
-    this._productService.getProduct(this.id).subscribe((result: ProductDto) => {
+    this._productService.get(this.id).subscribe((result: ProductDto) => {
       this.product = result;
       this.languages.forEach(lang => {
         this.langTranslation[lang.name] = ProductTranslationDto.fromJS({
@@ -61,7 +61,7 @@ export class EditProductDialogComponent extends AppComponentBase
       } 
     }).filter(el => el);
 
-    this._productService.updateProduct(this.product).subscribe(
+    this._productService.update(this.product).subscribe(
       () => {
         this.notify.info(this.l('SavedSuccessfully'));
         this.bsModalRef.hide();
