@@ -8,6 +8,8 @@ namespace ABPCommerce.OrderManagement.Order
     {
         public DateTime OrderDate { get; set; }
         public OrderStatus Status { get; set; }
+        public Shipping.ShippingAddress ShippingAddress { get; set; }
+        public Billing.BillingAddress BillingAddress { get; set; }
 
         public ICollection<OrderDetails> OrderDetails { get; set; }
     }
