@@ -8,5 +8,6 @@ namespace ABPCommerce.Catalog.Product
         public decimal Price { get; set; }
 
         public ICollection<ProductTranslation> Translations { get; set; }
+        public Category.Category Category { get; set; }
     }
 }

@@ -1,30 +1,30 @@
 ﻿using Abp.Domain.Entities;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ABPCommerce.OrderManagement.Shipping
 {
     public class ShippingAddress : Entity
     {
-        [MaxLength(255)]
+        public const int NameMaxLength = 255;
+        public const int CompanyNameMaxLength = 500;
+        public const int AddressMaxLength = 500;
+        public const int PostcodeMaxLength = 10;
+
+        [MaxLength(NameMaxLength)]
         public string FirstName { get; set; }
-        [MaxLength(255)]
+        [MaxLength(NameMaxLength)]
         public string LastName { get; set; }
-        [MaxLength(500)]
+        [MaxLength(CompanyNameMaxLength)]
         public string CompanyName { get; set; }
-        [MaxLength(255)]
+        [MaxLength(NameMaxLength)]
         public string Country { get; set; }
-        [MaxLength(255)]
+        [MaxLength(NameMaxLength)]
         public string State { get; set; }
-        [MaxLength(255)]
+        [MaxLength(NameMaxLength)]
         public string City { get; set; }
-        [MaxLength(10)]
+        [MaxLength(PostcodeMaxLength)]
         public string Postcode { get; set; }
-        [MaxLength(500)]
+        [MaxLength(AddressMaxLength)]
         public string Address { get; set; }
     }
 }
