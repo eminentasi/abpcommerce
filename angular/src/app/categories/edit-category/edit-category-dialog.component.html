@@ -1,0 +1,66 @@
+<form
+  class="form-horizontal"
+  autocomplete="off"
+  #editCategoryForm="ngForm"
+  (ngSubmit)="save()"
+>
+  <abp-modal-header
+    [title]="'EditCategory' | localize"
+    (onCloseClick)="bsModalRef.hide()"
+  ></abp-modal-header>
+  <div class="modal-body">
+    <div class="form-group row required">
+      <label class="col-md-3 col-form-label" for="DisplayOrder">
+        {{ "DisplayOrder" | localize }}
+      </label>
+      <div class="col-md-9">
+        <input
+          type="int"
+          class="form-control"
+          name="DisplayOrder"
+          id="DisplayOrder"
+          required
+          [(ngModel)]="category.displayOrder"
+          #DisplayOrderModel="ngModel"
+          #DisplayOrderEl
+        />
+        <abp-validation-summary
+          [control]="DisplayOrderModel"
+          [controlEl]="DisplayOrderEl"
+        ></abp-validation-summary>
+      </div>
+    </div>
+    <accordion>
+      <accordion-group *ngFor="let language of languages">
+        <button
+          class="btn btn-link btn-block justify-content-between d-flex w-100  shadow-none"
+          accordion-heading type="button">
+          <div class="pull-left float-left">
+            <i class="d-inline-block {{ language.icon }} mr-1"></i>
+            {{ language.displayName }}
+          </div>
+        </button>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" [for]="language.name + '_name'">
+            {{ "Name" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              [name]="language.name + '_name'"
+              [id]="language.name + '_name'"
+              maxlength="128"
+              [(ngModel)]="langTranslation[language.name].name"
+            />
+          </div>
+        </div>
+      </accordion-group>
+    </accordion>
+  </div>
+  <abp-modal-footer
+    [cancelDisabled]="saving"
+    [saveDisabled]="!editCategoryForm.form.valid || saving"
+    (onCancelClick)="bsModalRef.hide()"
+  ></abp-modal-footer>
+</form>

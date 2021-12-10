@@ -47,6 +47,10 @@ import { EditProductDialogComponent } from './products/edit-product/edit-product
 import { OrdersComponent } from '@app/orders/orders.component';
 import { CreateOrderDialogComponent } from './orders/create-order/create-order-dialog.component';
 import { EditOrderDialogComponent } from './orders/edit-order/edit-order-dialog.component';
+// categories
+import { CategoriesComponent } from '@app/categories/categories.component';
+import { CreateCategoryDialogComponent } from './categories/create-category/create-category-dialog.component';
+import { EditCategoryDialogComponent } from './categories/edit-category/edit-category-dialog.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +89,10 @@ import { EditOrderDialogComponent } from './orders/edit-order/edit-order-dialog.
     OrdersComponent,
     CreateOrderDialogComponent,
     EditOrderDialogComponent,
+    // categories
+    CategoriesComponent,
+    CreateCategoryDialogComponent,
+    EditCategoryDialogComponent,
   ],
   imports: [
     CommonModule,

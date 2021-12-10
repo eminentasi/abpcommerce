@@ -8,8 +8,8 @@ namespace ABPCommerce.Categories.Dto
     [AutoMap(typeof(Category))]
     public class CategoryDto: EntityDto
     {
-        // Mapped from Category.Price
-        public decimal Price { get; set; }
+        // Mapped from Category.DisplayOrder
+        public int DisplayOrder { get; set; }
         // Mapped from CategoryTranslation.Name
         public string Name { get; set; }
 

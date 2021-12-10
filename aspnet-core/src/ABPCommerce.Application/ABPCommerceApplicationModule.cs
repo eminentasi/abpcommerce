@@ -3,6 +3,7 @@ using Abp.Configuration;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using ABPCommerce.Authorization;
+using ABPCommerce.Categories.Mapping;
 using ABPCommerce.Products.Mapping;
 
 namespace ABPCommerce
@@ -28,6 +29,9 @@ namespace ABPCommerce
                 cfg => { 
                     cfg.AddMaps(thisAssembly);
                     ProductDtoMapper.CreateMappings(cfg, new MultiLingualMapContext(
+                        IocManager.Resolve<ISettingManager>()
+                    ));
+                    CategoriesDtoMapper.CreateMappings(cfg, new MultiLingualMapContext(
                         IocManager.Resolve<ISettingManager>()
                     ));
                 }
