@@ -3018,6 +3018,7 @@ export interface ICategoryDtoPagedResultDto {
 
 export class CategoryTranslationDto implements ICategoryTranslationDto {
     name: string | undefined;
+    description: string | undefined;
     language: string | undefined;
 
     constructor(data?: ICategoryTranslationDto) {
@@ -3032,6 +3033,7 @@ export class CategoryTranslationDto implements ICategoryTranslationDto {
     init(_data?: any) {
         if (_data) {
             this.name = _data["name"];
+            this.description = _data["description"];
             this.language = _data["language"];
         }
     }
@@ -3046,6 +3048,7 @@ export class CategoryTranslationDto implements ICategoryTranslationDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
+        data["description"] = this.description;
         data["language"] = this.language;
         return data; 
     }
@@ -3060,6 +3063,7 @@ export class CategoryTranslationDto implements ICategoryTranslationDto {
 
 export interface ICategoryTranslationDto {
     name: string | undefined;
+    description: string | undefined;
     language: string | undefined;
 }
 

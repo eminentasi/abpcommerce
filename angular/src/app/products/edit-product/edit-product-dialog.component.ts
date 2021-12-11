@@ -40,11 +40,17 @@ export class EditProductDialogComponent extends AppComponentBase
       this.localization.languages,
       (l) => !l.isDisabled
     );
+    this.languages.forEach(lang => {
+      this.langTranslation[lang.name] = ProductTranslationDto.fromJS({
+        language: lang.name
+      });
+    });
     this._productService.get(this.id).subscribe((result: ProductDto) => {
       this.product = result;
       this.languages.forEach(lang => {
         this.langTranslation[lang.name] = ProductTranslationDto.fromJS({
-          name: this.product.translations?.find(pt => pt.language === lang.name)?.name,
+          name: this.product.translations?.find(pt => pt.language === lang.name)?.name ?? '',
+          description: this.product.translations?.find(pt => pt.language === lang.name)?.description ?? '',
           language: lang.name
         });
       });

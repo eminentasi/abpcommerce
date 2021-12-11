@@ -40,11 +40,18 @@ export class EditCategoryDialogComponent extends AppComponentBase
       this.localization.languages,
       (l) => !l.isDisabled
     );
+    this.languages.forEach(lang => {
+      this.langTranslation[lang.name] = CategoryTranslationDto.fromJS({
+        language: lang.name
+      });
+    });
+
     this._categoryService.get(this.id).subscribe((result: CategoryDto) => {
       this.category = result;
       this.languages.forEach(lang => {
         this.langTranslation[lang.name] = CategoryTranslationDto.fromJS({
           name: this.category.translations?.find(pt => pt.language === lang.name)?.name,
+          description: this.category.translations?.find(pt => pt.language === lang.name)?.description,
           language: lang.name
         });
       });
