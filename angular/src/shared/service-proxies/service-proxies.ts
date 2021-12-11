@@ -4295,6 +4295,7 @@ export interface IProductDtoPagedResultDto {
 
 export class ProductTranslationDto implements IProductTranslationDto {
     name: string | undefined;
+    description: string | undefined;
     language: string | undefined;
 
     constructor(data?: IProductTranslationDto) {
@@ -4309,6 +4310,7 @@ export class ProductTranslationDto implements IProductTranslationDto {
     init(_data?: any) {
         if (_data) {
             this.name = _data["name"];
+            this.description = _data["description"];
             this.language = _data["language"];
         }
     }
@@ -4323,6 +4325,7 @@ export class ProductTranslationDto implements IProductTranslationDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
+        data["description"] = this.description;
         data["language"] = this.language;
         return data; 
     }
@@ -4337,6 +4340,7 @@ export class ProductTranslationDto implements IProductTranslationDto {
 
 export interface IProductTranslationDto {
     name: string | undefined;
+    description: string | undefined;
     language: string | undefined;
 }
 

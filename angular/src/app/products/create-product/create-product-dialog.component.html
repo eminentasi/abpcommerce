@@ -51,9 +51,24 @@
               class="form-control"
               [name]="language.name + '_name'"
               [id]="language.name + '_name'"
-              maxlength="128"
+              maxlength="400"
               [(ngModel)]="langTranslation[language.name].name"
             />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" [for]="language.name + '_desc'">
+            {{ "Description" | localize }}
+          </label>
+          <div class="col-md-9">
+            <textarea
+              class="form-control"
+              [name]="language.name + '_desc'"
+              [id]="language.name + '_desc'"
+              maxlength="1024"
+              rows="4"
+              [(ngModel)]="langTranslation[language.name].description"
+            ></textarea>
           </div>
         </div>
       </accordion-group>
