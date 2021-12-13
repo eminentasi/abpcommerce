@@ -11,147 +11,261 @@
   <div class="modal-body">
     <tabset>
       <tab [heading]="'UserDetails' | localize" class="pt-3 px-2">
-        <div class="form-group row required">
-          <label class="col-md-3 col-form-label" for="name">
-            {{ "Name" | localize }}
-          </label>
-          <div class="col-md-9">
-            <input
-              type="text"
-              class="form-control"
-              name="name"
-              id="name"
-              required
-              maxlength="32"
-              [(ngModel)]="user.name"
-              #nameModel="ngModel"
-              #nameEl
-            />
-            <abp-validation-summary
-              [control]="nameModel"
-              [controlEl]="nameEl"
-            ></abp-validation-summary>
+        <fieldset>
+          <legend>{{'Account Info' | localize}}</legend>
+          <div class="row">
+            <div class="col-md-8">
+              <div class="form-group row required">
+                <label class="col-md-3 col-form-label" for="name">
+                  {{ "Name" | localize }}
+                </label>
+                <div class="col-md-9">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="name"
+                    id="name"
+                    required
+                    maxlength="32"
+                    [(ngModel)]="user.name"
+                    #nameModel="ngModel"
+                    #nameEl
+                  />
+                  <abp-validation-summary
+                    [control]="nameModel"
+                    [controlEl]="nameEl"
+                  ></abp-validation-summary>
+                </div>
+              </div>
+              <div class="form-group row required">
+                <label class="col-md-3 col-form-label" for="surname">
+                  {{ "Surname" | localize }}
+                </label>
+                <div class="col-md-9">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="surname"
+                    id="surname"
+                    required
+                    maxlength="32"
+                    [(ngModel)]="user.surname"
+                    #surnameModel="ngModel"
+                    #surnameEl
+                  />
+                  <abp-validation-summary
+                    [control]="surnameModel"
+                    [controlEl]="surnameEl"
+                  ></abp-validation-summary>
+                </div>
+              </div>
+              <div class="form-group row required">
+                <label class="col-md-3 col-form-label" for="userName">
+                  {{ "UserName" | localize }}
+                </label>
+                <div class="col-md-9">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="userName"
+                    id="userName"
+                    required
+                    minlength="2"
+                    maxlength="32"
+                    [(ngModel)]="user.userName"
+                    #userNameModel="ngModel"
+                    #userNameEl
+                  />
+                  <abp-validation-summary
+                    [control]="userNameModel"
+                    [controlEl]="userNameEl"
+                  ></abp-validation-summary>
+                </div>
+              </div>
+              <div class="form-group row required">
+                <label class="col-md-3 col-form-label" for="password">
+                  {{ "Password" | localize }}
+                </label>
+                <div class="col-md-9">
+                  <input
+                    type="password"
+                    class="form-control"
+                    name="password"
+                    id="password"
+                    required
+                    maxlength="32"
+                    validateEqual="confirmPassword"
+                    reverse="true"
+                    pattern="(?=^.{8,}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)[0-9a-zA-Z!@#$%^&*()]*$"
+                    [(ngModel)]="user.password"
+                    #passwordModel="ngModel"
+                    #passwordEl
+                  />
+                  <abp-validation-summary
+                    [control]="passwordModel"
+                    [controlEl]="passwordEl"
+                    [customValidationErrors]="passwordValidationErrors"
+                  ></abp-validation-summary>
+                </div>
+              </div>
+              <div class="form-group row required">
+                <label class="col-md-3 col-form-label" for="confirmPassword">
+                  {{ "ConfirmPassword" | localize }}
+                </label>
+                <div class="col-md-9">
+                  <input
+                    type="password"
+                    class="form-control"
+                    name="confirmPassword"
+                    id="confirmPassword"
+                    required
+                    maxlength="32"
+                    validateEqual="password"
+                    reverse="false"
+                    ngModel
+                    #confirmPasswordModel="ngModel"
+                    #confirmPasswordEl
+                  />
+                  <abp-validation-summary
+                    [control]="confirmPasswordModel"
+                    [controlEl]="confirmPasswordEl"
+                    [customValidationErrors]="confirmPasswordValidationErrors"
+                  ></abp-validation-summary>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <img [src]="user.imgBase64" alt="User Image"
+                     class="img-fluid img-bordered"
+                     />
+                <input type="file"
+                        class="form-control-file"
+                        accept="image/*"
+                        (change)="onUploadChange($event)"
+                         />
+                <small class="form-text text-muted">
+                  {{'Max file size is (1MB)' | localize}}
+                </small>
+                <small class="text-danger" *ngIf="fileSizeError">
+                  {{'Your file exceeds max file size (1MB)' | localize}}
+                </small>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="form-group row required">
-          <label class="col-md-3 col-form-label" for="surname">
-            {{ "Surname" | localize }}
-          </label>
-          <div class="col-md-9">
-            <input
-              type="text"
-              class="form-control"
-              name="surname"
-              id="surname"
-              required
-              maxlength="32"
-              [(ngModel)]="user.surname"
-              #surnameModel="ngModel"
-              #surnameEl
-            />
-            <abp-validation-summary
-              [control]="surnameModel"
-              [controlEl]="surnameEl"
-            ></abp-validation-summary>
+        </fieldset>
+        
+        <fieldset>
+          <legend>{{'Contact Details' | localize}}</legend>
+          <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="emailAddress">
+              {{ "EmailAddress" | localize }}
+            </label>
+            <div class="col-md-9">
+              <input
+                type="email"
+                class="form-control"
+                name="emailAddress"
+                id="emailAddress"
+                required
+                maxlength="256"
+                pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,})+$"
+                [(ngModel)]="user.emailAddress"
+                #emailAddressModel="ngModel"
+                #emailAddressEl
+              />
+              <abp-validation-summary
+                [control]="emailAddressModel"
+                [controlEl]="emailAddressEl"
+              ></abp-validation-summary>
+            </div>
           </div>
-        </div>
-        <div class="form-group row required">
-          <label class="col-md-3 col-form-label" for="userName">
-            {{ "UserName" | localize }}
-          </label>
-          <div class="col-md-9">
-            <input
-              type="text"
-              class="form-control"
-              name="userName"
-              id="userName"
-              required
-              minlength="2"
-              maxlength="32"
-              [(ngModel)]="user.userName"
-              #userNameModel="ngModel"
-              #userNameEl
-            />
-            <abp-validation-summary
-              [control]="userNameModel"
-              [controlEl]="userNameEl"
-            ></abp-validation-summary>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="title">
+              {{ "Title" | localize }}
+            </label>
+            <div class="col-md-9">
+              <input
+                type="text"
+                class="form-control"
+                name="title"
+                id="title"
+                maxlength="100"
+                [(ngModel)]="user.title"
+                #titleModel="ngModel"
+                #titleEl
+              />
+              <abp-validation-summary
+                [control]="titleModel"
+                [controlEl]="titleEl"
+              ></abp-validation-summary>
+            </div>
           </div>
-        </div>
-        <div class="form-group row required">
-          <label class="col-md-3 col-form-label" for="password">
-            {{ "Password" | localize }}
-          </label>
-          <div class="col-md-9">
-            <input
-              type="password"
-              class="form-control"
-              name="password"
-              id="password"
-              required
-              maxlength="32"
-              validateEqual="confirmPassword"
-              reverse="true"
-              pattern="(?=^.{8,}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)[0-9a-zA-Z!@#$%^&*()]*$"
-              [(ngModel)]="user.password"
-              #passwordModel="ngModel"
-              #passwordEl
-            />
-            <abp-validation-summary
-              [control]="passwordModel"
-              [controlEl]="passwordEl"
-              [customValidationErrors]="passwordValidationErrors"
-            ></abp-validation-summary>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="phoneNumber">
+              {{ "PhoneNumber" | localize }}
+            </label>
+            <div class="col-md-9">
+              <input
+                type="tel"
+                class="form-control"
+                name="phoneNumber"
+                id="phoneNumber"
+                maxlength="32"
+                [(ngModel)]="user.phoneNumber"
+                #phoneNumberModel="ngModel"
+                #phoneNumberEl
+              />
+              <abp-validation-summary
+                [control]="phoneNumberModel"
+                [controlEl]="phoneNumberEl"
+              ></abp-validation-summary>
+            </div>
           </div>
-        </div>
-        <div class="form-group row required">
-          <label class="col-md-3 col-form-label" for="confirmPassword">
-            {{ "ConfirmPassword" | localize }}
-          </label>
-          <div class="col-md-9">
-            <input
-              type="password"
-              class="form-control"
-              name="confirmPassword"
-              id="confirmPassword"
-              required
-              maxlength="32"
-              validateEqual="password"
-              reverse="false"
-              ngModel
-              #confirmPasswordModel="ngModel"
-              #confirmPasswordEl
-            />
-            <abp-validation-summary
-              [control]="confirmPasswordModel"
-              [controlEl]="confirmPasswordEl"
-              [customValidationErrors]="confirmPasswordValidationErrors"
-            ></abp-validation-summary>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="organization">
+              {{ "Organization" | localize }}
+            </label>
+            <div class="col-md-9">
+              <input
+                type="text"
+                class="form-control"
+                name="organization"
+                id="organization"
+                maxlength="400"
+                [(ngModel)]="user.organization"
+                #organizationModel="ngModel"
+                #organizationEl
+              />
+              <abp-validation-summary
+                [control]="organizationModel"
+                [controlEl]="organizationEl"
+              ></abp-validation-summary>
+            </div>
           </div>
-        </div>
-        <div class="form-group row required">
-          <label class="col-md-3 col-form-label" for="emailAddress">
-            {{ "EmailAddress" | localize }}
-          </label>
-          <div class="col-md-9">
-            <input
-              type="email"
-              class="form-control"
-              name="emailAddress"
-              id="emailAddress"
-              required
-              maxlength="256"
-              pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,})+$"
-              [(ngModel)]="user.emailAddress"
-              #emailAddressModel="ngModel"
-              #emailAddressEl
-            />
-            <abp-validation-summary
-              [control]="emailAddressModel"
-              [controlEl]="emailAddressEl"
-            ></abp-validation-summary>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="website">
+              {{ "Website" | localize }}
+            </label>
+            <div class="col-md-9">
+              <input
+                type="url"
+                class="form-control"
+                name="website"
+                id="website"
+                maxlength="2048"
+                [(ngModel)]="user.website"
+                #websiteModel="ngModel"
+                #websiteEl
+              />
+              <abp-validation-summary
+                [control]="websiteModel"
+                [controlEl]="websiteEl"
+              ></abp-validation-summary>
+            </div>
           </div>
-        </div>
+          
+        </fieldset>
         <div class="form-group row mb-0">
           <label class="col-md-3 col-form-label">
             {{ "IsActive" | localize }}

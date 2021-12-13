@@ -21,6 +21,7 @@ import { AbpValidationError } from '@shared/components/validation/abp-validation
 export class CreateUserDialogComponent extends AppComponentBase
   implements OnInit {
   saving = false;
+  fileSizeError = false;
   user = new CreateUserDto();
   roles: RoleDto[] = [];
   checkedRolesMap: { [key: string]: boolean } = {};
@@ -74,6 +75,21 @@ export class CreateUserDialogComponent extends AppComponentBase
 
   onRoleChange(role: RoleDto, $event) {
     this.checkedRolesMap[role.normalizedName] = $event.target.checked;
+  }
+
+  onUploadChange(evt){
+    const file = evt.target.files[0];
+    this.fileSizeError = file.size > 1024 * 1024;
+    if (!file || this.fileSizeError) {
+        return false;
+    }
+    
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+        this.user.imgBase64 = reader.result as string;
+    };
+    
   }
 
   getCheckedRoles(): string[] {

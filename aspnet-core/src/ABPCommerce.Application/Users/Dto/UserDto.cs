@@ -27,6 +27,18 @@ namespace ABPCommerce.Users.Dto
         [StringLength(AbpUserBase.MaxEmailAddressLength)]
         public string EmailAddress { get; set; }
 
+        [Phone]
+        public string PhoneNumber { get; set; }
+
+        [MaxLength(User.ImgMaxLength)]
+        public string ImgBase64 { get; set; }
+        [MaxLength(User.UrlMaxLength)]
+        public string Website { get; set; }
+        [MaxLength(User.OrgMaxLength)]
+        public string Organization { get; set; }
+        [MaxLength(User.TitleMaxLength)]
+        public string Title { get; set; }
+
         public bool IsActive { get; set; }
 
         public string FullName { get; set; }

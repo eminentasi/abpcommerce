@@ -3331,6 +3331,11 @@ export class CreateUserDto implements ICreateUserDto {
     name: string;
     surname: string;
     emailAddress: string;
+    phoneNumber: string | undefined;
+    imgBase64: string | undefined;
+    website: string | undefined;
+    organization: string | undefined;
+    title: string | undefined;
     isActive: boolean;
     roleNames: string[] | undefined;
     password: string;
@@ -3350,6 +3355,11 @@ export class CreateUserDto implements ICreateUserDto {
             this.name = _data["name"];
             this.surname = _data["surname"];
             this.emailAddress = _data["emailAddress"];
+            this.phoneNumber = _data["phoneNumber"];
+            this.imgBase64 = _data["imgBase64"];
+            this.website = _data["website"];
+            this.organization = _data["organization"];
+            this.title = _data["title"];
             this.isActive = _data["isActive"];
             if (Array.isArray(_data["roleNames"])) {
                 this.roleNames = [] as any;
@@ -3373,6 +3383,11 @@ export class CreateUserDto implements ICreateUserDto {
         data["name"] = this.name;
         data["surname"] = this.surname;
         data["emailAddress"] = this.emailAddress;
+        data["phoneNumber"] = this.phoneNumber;
+        data["imgBase64"] = this.imgBase64;
+        data["website"] = this.website;
+        data["organization"] = this.organization;
+        data["title"] = this.title;
         data["isActive"] = this.isActive;
         if (Array.isArray(this.roleNames)) {
             data["roleNames"] = [];
@@ -3396,6 +3411,11 @@ export interface ICreateUserDto {
     name: string;
     surname: string;
     emailAddress: string;
+    phoneNumber: string | undefined;
+    imgBase64: string | undefined;
+    website: string | undefined;
+    organization: string | undefined;
+    title: string | undefined;
     isActive: boolean;
     roleNames: string[] | undefined;
     password: string;
@@ -5028,6 +5048,11 @@ export class UserDto implements IUserDto {
     name: string;
     surname: string;
     emailAddress: string;
+    phoneNumber: string | undefined;
+    imgBase64: string | undefined;
+    website: string | undefined;
+    organization: string | undefined;
+    title: string | undefined;
     isActive: boolean;
     fullName: string | undefined;
     lastLoginTime: moment.Moment | undefined;
@@ -5050,6 +5075,11 @@ export class UserDto implements IUserDto {
             this.name = _data["name"];
             this.surname = _data["surname"];
             this.emailAddress = _data["emailAddress"];
+            this.phoneNumber = _data["phoneNumber"];
+            this.imgBase64 = _data["imgBase64"];
+            this.website = _data["website"];
+            this.organization = _data["organization"];
+            this.title = _data["title"];
             this.isActive = _data["isActive"];
             this.fullName = _data["fullName"];
             this.lastLoginTime = _data["lastLoginTime"] ? moment(_data["lastLoginTime"].toString()) : <any>undefined;
@@ -5076,6 +5106,11 @@ export class UserDto implements IUserDto {
         data["name"] = this.name;
         data["surname"] = this.surname;
         data["emailAddress"] = this.emailAddress;
+        data["phoneNumber"] = this.phoneNumber;
+        data["imgBase64"] = this.imgBase64;
+        data["website"] = this.website;
+        data["organization"] = this.organization;
+        data["title"] = this.title;
         data["isActive"] = this.isActive;
         data["fullName"] = this.fullName;
         data["lastLoginTime"] = this.lastLoginTime ? this.lastLoginTime.toISOString() : <any>undefined;
@@ -5102,6 +5137,11 @@ export interface IUserDto {
     name: string;
     surname: string;
     emailAddress: string;
+    phoneNumber: string | undefined;
+    imgBase64: string | undefined;
+    website: string | undefined;
+    organization: string | undefined;
+    title: string | undefined;
     isActive: boolean;
     fullName: string | undefined;
     lastLoginTime: moment.Moment | undefined;
