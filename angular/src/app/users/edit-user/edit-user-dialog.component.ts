@@ -20,6 +20,7 @@ import {
 export class EditUserDialogComponent extends AppComponentBase
   implements OnInit {
   saving = false;
+  fileSizeError = false;
   user = new UserDto();
   roles: RoleDto[] = [];
   checkedRolesMap: { [key: string]: boolean } = {};
@@ -60,6 +61,25 @@ export class EditUserDialogComponent extends AppComponentBase
 
   onRoleChange(role: RoleDto, $event) {
     this.checkedRolesMap[role.normalizedName] = $event.target.checked;
+  }
+
+  onUploadChange(evt){
+    const file = evt.target.files[0];
+    this.fileSizeError = file.size > 1024 * 1024;
+    if (!file || this.fileSizeError) {
+        return false;
+    }
+    
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+        this.user.imgBase64 = reader.result as string;
+    };
+    
+  }
+
+  removeImage() {
+    this.user.imgBase64 = undefined;
   }
 
   getCheckedRoles(): string[] {

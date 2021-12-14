@@ -92,6 +92,10 @@ export class CreateUserDialogComponent extends AppComponentBase
     
   }
 
+  removeImage() {
+    this.user.imgBase64 = undefined;
+  }
+
   getCheckedRoles(): string[] {
     const roles: string[] = [];
     _forEach(this.checkedRolesMap, function (value, key) {

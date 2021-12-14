@@ -136,9 +136,16 @@
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                <img [src]="user.imgBase64" alt="User Image"
+                <div class="img-wrap">
+                  <img [src]="user.imgBase64 ?? 'assets/img/user.png'" alt="User Image"
                      class="img-fluid img-bordered"
                      />
+                  <button type="button" class="close text-danger" aria-label="Close"
+                          (click)="removeImage()"
+                          *ngIf="user.imgBase64">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
                 <input type="file"
                         class="form-control-file"
                         accept="image/*"
