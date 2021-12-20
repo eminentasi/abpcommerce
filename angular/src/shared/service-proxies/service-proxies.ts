@@ -4203,6 +4203,8 @@ export class ProductDto implements IProductDto {
     id: number;
     price: number;
     name: string | undefined;
+    categoryId: number | undefined;
+    category: CategoryDto;
     translations: ProductTranslationDto[] | undefined;
 
     constructor(data?: IProductDto) {
@@ -4219,6 +4221,8 @@ export class ProductDto implements IProductDto {
             this.id = _data["id"];
             this.price = _data["price"];
             this.name = _data["name"];
+            this.categoryId = _data["categoryId"];
+            this.category = _data["category"] ? CategoryDto.fromJS(_data["category"]) : <any>undefined;
             if (Array.isArray(_data["translations"])) {
                 this.translations = [] as any;
                 for (let item of _data["translations"])
@@ -4239,6 +4243,8 @@ export class ProductDto implements IProductDto {
         data["id"] = this.id;
         data["price"] = this.price;
         data["name"] = this.name;
+        data["categoryId"] = this.categoryId;
+        data["category"] = this.category ? this.category.toJSON() : <any>undefined;
         if (Array.isArray(this.translations)) {
             data["translations"] = [];
             for (let item of this.translations)
@@ -4259,6 +4265,8 @@ export interface IProductDto {
     id: number;
     price: number;
     name: string | undefined;
+    categoryId: number | undefined;
+    category: CategoryDto;
     translations: ProductTranslationDto[] | undefined;
 }
 

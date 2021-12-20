@@ -10,7 +10,9 @@ import { AppComponentBase } from '@shared/app-component-base';
 import {
   ProductsServiceProxy,
   ProductDto,
-  ProductTranslationDto
+  ProductTranslationDto,
+  CategoriesServiceProxy,
+  CategoryDto
 } from '@shared/service-proxies/service-proxies';
 import { filter as _filter } from 'lodash-es';
 
@@ -24,12 +26,14 @@ export class EditProductDialogComponent extends AppComponentBase
   langTranslation: ProductTranslationDto[] = [];
   product: ProductDto = new ProductDto();
   id: number;
+  categories: CategoryDto[] = [];
 
   @Output() onSave = new EventEmitter<any>();
 
   constructor(
     injector: Injector,
-    public _productService: ProductsServiceProxy,
+    private _productService: ProductsServiceProxy,
+    private _categoryService: CategoriesServiceProxy,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
@@ -45,6 +49,7 @@ export class EditProductDialogComponent extends AppComponentBase
         language: lang.name
       });
     });
+    this._categoryService.getAll('', 0, 100).subscribe(res => this.categories = res.items);
     this._productService.get(this.id).subscribe((result: ProductDto) => {
       this.product = result;
       this.languages.forEach(lang => {

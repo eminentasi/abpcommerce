@@ -8,6 +8,8 @@ import {
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { AppComponentBase } from '@shared/app-component-base';
 import {
+  CategoriesServiceProxy,
+  CategoryDto,
   ProductDto,
   ProductsServiceProxy,
   ProductTranslationDto
@@ -24,12 +26,14 @@ export class CreateProductDialogComponent extends AppComponentBase
   languages: abp.localization.ILanguageInfo[];
   currentLanguage: abp.localization.ILanguageInfo;
   langTranslation: ProductTranslationDto[] = [];
+  categories: CategoryDto[] = [];
 
   @Output() onSave = new EventEmitter<any>();
 
   constructor(
     injector: Injector,
-    public _productService: ProductsServiceProxy,
+    private _productService: ProductsServiceProxy,
+    private _categoryService: CategoriesServiceProxy,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
@@ -46,6 +50,8 @@ export class CreateProductDialogComponent extends AppComponentBase
         language: lang.name
       });
     });
+
+    this._categoryService.getAll('', 0, 100).subscribe(res => this.categories = res.items);
   }
 
   save(): void {
