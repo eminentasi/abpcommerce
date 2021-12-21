@@ -12,6 +12,7 @@ import {
   OrderDto
 } from '@shared/service-proxies/service-proxies';
 import { filter as _filter } from 'lodash-es';
+import { AppOrderStatus } from '@shared/AppEnums';
 
 @Component({
   templateUrl: 'edit-order-dialog.component.html'
@@ -21,6 +22,7 @@ export class EditOrderDialogComponent extends AppComponentBase
   saving = false;
   order: OrderDto = new OrderDto();
   id: number;
+  AppOrderStatus = AppOrderStatus;
 
   @Output() onSave = new EventEmitter<any>();
 

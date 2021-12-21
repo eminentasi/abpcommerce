@@ -8,10 +8,13 @@ import {
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { AppComponentBase } from '@shared/app-component-base';
 import {
+  BillingAddressDto,
   OrderDto,
-  OrdersServiceProxy
+  OrdersServiceProxy,
+  ShippingAddressDto
 } from '@shared/service-proxies/service-proxies';
 import { filter as _filter } from 'lodash-es';
+import { AppOrderStatus } from '@shared/AppEnums';
 
 @Component({
   templateUrl: 'create-order-dialog.component.html'
@@ -20,6 +23,7 @@ export class CreateOrderDialogComponent extends AppComponentBase
   implements OnInit {
   saving = false;
   order: OrderDto = new OrderDto();
+  AppOrderStatus = AppOrderStatus;
 
   @Output() onSave = new EventEmitter<any>();
 
@@ -32,7 +36,8 @@ export class CreateOrderDialogComponent extends AppComponentBase
   }
 
   ngOnInit(): void {
-
+    this.order.shippingAddress = new ShippingAddressDto();
+    this.order.billingAddress = new BillingAddressDto();
   }
 
   save(): void {

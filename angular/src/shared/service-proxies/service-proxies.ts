@@ -2898,6 +2898,85 @@ export interface IAuthenticateResultModel {
     userId: number;
 }
 
+export class BillingAddressDto implements IBillingAddressDto {
+    id: number;
+    firstName: string | undefined;
+    lastName: string | undefined;
+    companyName: string | undefined;
+    country: string | undefined;
+    state: string | undefined;
+    city: string | undefined;
+    postcode: string | undefined;
+    address: string | undefined;
+    taxId: string | undefined;
+
+    constructor(data?: IBillingAddressDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.companyName = _data["companyName"];
+            this.country = _data["country"];
+            this.state = _data["state"];
+            this.city = _data["city"];
+            this.postcode = _data["postcode"];
+            this.address = _data["address"];
+            this.taxId = _data["taxId"];
+        }
+    }
+
+    static fromJS(data: any): BillingAddressDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BillingAddressDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["companyName"] = this.companyName;
+        data["country"] = this.country;
+        data["state"] = this.state;
+        data["city"] = this.city;
+        data["postcode"] = this.postcode;
+        data["address"] = this.address;
+        data["taxId"] = this.taxId;
+        return data; 
+    }
+
+    clone(): BillingAddressDto {
+        const json = this.toJSON();
+        let result = new BillingAddressDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IBillingAddressDto {
+    id: number;
+    firstName: string | undefined;
+    lastName: string | undefined;
+    companyName: string | undefined;
+    country: string | undefined;
+    state: string | undefined;
+    city: string | undefined;
+    postcode: string | undefined;
+    address: string | undefined;
+    taxId: string | undefined;
+}
+
 export class CategoryDto implements ICategoryDto {
     id: number;
     displayOrder: number;
@@ -3950,6 +4029,8 @@ export class OrderDto implements IOrderDto {
     deletionTime: moment.Moment | undefined;
     orderDate: moment.Moment;
     status: OrderStatus;
+    shippingAddress: ShippingAddressDto;
+    billingAddress: BillingAddressDto;
     orderDetails: OrderDetailsDto[] | undefined;
 
     constructor(data?: IOrderDto) {
@@ -3973,6 +4054,8 @@ export class OrderDto implements IOrderDto {
             this.deletionTime = _data["deletionTime"] ? moment(_data["deletionTime"].toString()) : <any>undefined;
             this.orderDate = _data["orderDate"] ? moment(_data["orderDate"].toString()) : <any>undefined;
             this.status = _data["status"];
+            this.shippingAddress = _data["shippingAddress"] ? ShippingAddressDto.fromJS(_data["shippingAddress"]) : <any>undefined;
+            this.billingAddress = _data["billingAddress"] ? BillingAddressDto.fromJS(_data["billingAddress"]) : <any>undefined;
             if (Array.isArray(_data["orderDetails"])) {
                 this.orderDetails = [] as any;
                 for (let item of _data["orderDetails"])
@@ -4000,6 +4083,8 @@ export class OrderDto implements IOrderDto {
         data["deletionTime"] = this.deletionTime ? this.deletionTime.toISOString() : <any>undefined;
         data["orderDate"] = this.orderDate ? this.orderDate.toISOString() : <any>undefined;
         data["status"] = this.status;
+        data["shippingAddress"] = this.shippingAddress ? this.shippingAddress.toJSON() : <any>undefined;
+        data["billingAddress"] = this.billingAddress ? this.billingAddress.toJSON() : <any>undefined;
         if (Array.isArray(this.orderDetails)) {
             data["orderDetails"] = [];
             for (let item of this.orderDetails)
@@ -4027,6 +4112,8 @@ export interface IOrderDto {
     deletionTime: moment.Moment | undefined;
     orderDate: moment.Moment;
     status: OrderStatus;
+    shippingAddress: ShippingAddressDto;
+    billingAddress: BillingAddressDto;
     orderDetails: OrderDetailsDto[] | undefined;
 }
 
@@ -4881,6 +4968,81 @@ export class RoleListDtoListResultDto implements IRoleListDtoListResultDto {
 
 export interface IRoleListDtoListResultDto {
     items: RoleListDto[] | undefined;
+}
+
+export class ShippingAddressDto implements IShippingAddressDto {
+    id: number;
+    firstName: string | undefined;
+    lastName: string | undefined;
+    companyName: string | undefined;
+    country: string | undefined;
+    state: string | undefined;
+    city: string | undefined;
+    postcode: string | undefined;
+    address: string | undefined;
+
+    constructor(data?: IShippingAddressDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.companyName = _data["companyName"];
+            this.country = _data["country"];
+            this.state = _data["state"];
+            this.city = _data["city"];
+            this.postcode = _data["postcode"];
+            this.address = _data["address"];
+        }
+    }
+
+    static fromJS(data: any): ShippingAddressDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ShippingAddressDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["companyName"] = this.companyName;
+        data["country"] = this.country;
+        data["state"] = this.state;
+        data["city"] = this.city;
+        data["postcode"] = this.postcode;
+        data["address"] = this.address;
+        return data; 
+    }
+
+    clone(): ShippingAddressDto {
+        const json = this.toJSON();
+        let result = new ShippingAddressDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IShippingAddressDto {
+    id: number;
+    firstName: string | undefined;
+    lastName: string | undefined;
+    companyName: string | undefined;
+    country: string | undefined;
+    state: string | undefined;
+    city: string | undefined;
+    postcode: string | undefined;
+    address: string | undefined;
 }
 
 export enum TenantAvailabilityState {

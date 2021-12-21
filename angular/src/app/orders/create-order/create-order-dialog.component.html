@@ -9,27 +9,442 @@
     (onCloseClick)="bsModalRef.hide()"
   ></abp-modal-header>
   <div class="modal-body">
-    <div class="form-group row required">
-      <label class="col-md-3 col-form-label" for="Name">
-        {{ "OrderDate" | localize }}
-      </label>
-      <div class="col-md-9">
-        <input
-          type="datetime"
-          class="form-control"
-          name="OrderDate"
-          id="OrderDate"
-          required
-          [(ngModel)]="order.orderDate"
-          #OrderDateModel="ngModel"
-          #OrderDateEl
-        />
-        <abp-validation-summary
-          [control]="OrderDateModel"
-          [controlEl]="OrderDateEl"
-        ></abp-validation-summary>
-      </div>
-    </div>
+    <tabset>
+      <tab [heading]="'OrderDetails' | localize" class="pt-3 px-2">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group required">
+              <label class="col-form-label" for="OrderDate">
+                {{ "OrderDate" | localize }}
+              </label>
+                <input
+                  type="datetime"
+                  class="form-control"
+                  name="OrderDate"
+                  id="OrderDate"
+                  required
+                  [(ngModel)]="order.orderDate"
+                  #OrderDateModel="ngModel"
+                  #OrderDateEl
+                />
+                <abp-validation-summary
+                  [control]="OrderDateModel"
+                  [controlEl]="OrderDateEl"
+                ></abp-validation-summary>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group required">
+              <label class="col-form-label" for="Status">
+                {{ "Status" | localize }}
+              </label>
+                <select
+                  class="form-control"
+                  name="Status"
+                  id="Status"
+                  [(ngModel)]="order.status"
+                  #StatusModel="ngModel"
+                  #StatusEl
+                >
+                  <option [value]="AppOrderStatus.Pending">{{ AppOrderStatus.getName(AppOrderStatus.Pending) }}</option>
+                  <option [value]="AppOrderStatus.Processing">{{ AppOrderStatus.getName(AppOrderStatus.Processing) }}</option>
+                  <option [value]="AppOrderStatus.Shipping">{{ AppOrderStatus.getName(AppOrderStatus.Shipping) }}</option>
+                  <option [value]="AppOrderStatus.Completed">{{ AppOrderStatus.getName(AppOrderStatus.Completed) }}</option>
+                  <option [value]="AppOrderStatus.Returned">{{ AppOrderStatus.getName(AppOrderStatus.Returned) }}</option>
+                </select>
+                <abp-validation-summary
+                  [control]="StatusModel"
+                  [controlEl]="StatusEl"
+                ></abp-validation-summary>
+            </div>
+          </div>
+        </div>
+        <table class="table table-head-fixed">
+          <thead>
+            <tr>
+              <td>{{'Product' | localize}}</td>
+              <td>{{'UnitPrice' | localize}}</td>
+              <td>{{'Quantity' | localize}}</td>
+              <td>{{'Subtotal' | localize}}</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </tab>
+      <tab [heading]="'ShippingAddress' | localize" class="pt-3 px-2">
+        <div class="form-group row required">
+          <label class="col-md-3 col-form-label" for="FirstName">
+            {{ "FirstName" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="FirstName"
+              id="FirstName"
+              required
+              maxlength="255"
+              [(ngModel)]="order.shippingAddress.firstName"
+              #FirstNameModel="ngModel"
+              #FirstNameEl
+            />
+            <abp-validation-summary
+              [control]="FirstNameModel"
+              [controlEl]="FirstNameEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row required">
+          <label class="col-md-3 col-form-label" for="LastName">
+            {{ "LastName" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="LastName"
+              id="LastName"
+              required
+              maxlength="255"
+              [(ngModel)]="order.shippingAddress.lastName"
+              #LastNameModel="ngModel"
+              #LastNameEl
+            />
+            <abp-validation-summary
+              [control]="LastNameModel"
+              [controlEl]="LastNameEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="CompanyName">
+            {{ "CompanyName" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="CompanyName"
+              id="CompanyName"
+              maxlength="500"
+              [(ngModel)]="order.shippingAddress.lastName"
+              #CompanyNameModel="ngModel"
+              #CompanyNameEl
+            />
+            <abp-validation-summary
+              [control]="CompanyNameModel"
+              [controlEl]="CompanyNameEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="Address">
+            {{ "Address" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="Address"
+              id="Address"
+              maxlength="500"
+              [(ngModel)]="order.shippingAddress.address"
+              #AddressModel="ngModel"
+              #AddressEl
+            />
+            <abp-validation-summary
+              [control]="AddressModel"
+              [controlEl]="AddressEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="State">
+            {{ "State" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="State"
+              id="State"
+              maxlength="255"
+              [(ngModel)]="order.shippingAddress.state"
+              #StateModel="ngModel"
+              #StateEl
+            />
+            <abp-validation-summary
+              [control]="StateModel"
+              [controlEl]="StateEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="City">
+            {{ "City" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="City"
+              id="City"
+              maxlength="255"
+              [(ngModel)]="order.shippingAddress.city"
+              #CityModel="ngModel"
+              #CityEl
+            />
+            <abp-validation-summary
+              [control]="CityModel"
+              [controlEl]="CityEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="Postcode">
+            {{ "Postcode" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="Postcode"
+              id="Postcode"
+              maxlength="10"
+              [(ngModel)]="order.shippingAddress.postcode"
+              #PostcodeModel="ngModel"
+              #PostcodeEl
+            />
+            <abp-validation-summary
+              [control]="PostcodeModel"
+              [controlEl]="PostcodeEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="Country">
+            {{ "Country" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="Country"
+              id="Country"
+              maxlength="255"
+              [(ngModel)]="order.shippingAddress.country"
+              #CountryModel="ngModel"
+              #CountryEl
+            />
+            <abp-validation-summary
+              [control]="CountryModel"
+              [controlEl]="CountryEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+      </tab>
+      <tab [heading]="'BillingAddress' | localize" class="pt-3 px-2">
+        <div class="form-group row required">
+          <label class="col-md-3 col-form-label" for="FirstName">
+            {{ "FirstName" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="FirstName"
+              id="FirstName"
+              required
+              maxlength="255"
+              [(ngModel)]="order.shippingAddress.firstName"
+              #FirstNameModel="ngModel"
+              #FirstNameEl
+            />
+            <abp-validation-summary
+              [control]="FirstNameModel"
+              [controlEl]="FirstNameEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row required">
+          <label class="col-md-3 col-form-label" for="LastName">
+            {{ "LastName" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="LastName"
+              id="LastName"
+              required
+              maxlength="255"
+              [(ngModel)]="order.shippingAddress.lastName"
+              #LastNameModel="ngModel"
+              #LastNameEl
+            />
+            <abp-validation-summary
+              [control]="LastNameModel"
+              [controlEl]="LastNameEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="CompanyName">
+            {{ "CompanyName" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="CompanyName"
+              id="CompanyName"
+              maxlength="500"
+              [(ngModel)]="order.shippingAddress.lastName"
+              #CompanyNameModel="ngModel"
+              #CompanyNameEl
+            />
+            <abp-validation-summary
+              [control]="CompanyNameModel"
+              [controlEl]="CompanyNameEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row required">
+          <label class="col-md-3 col-form-label" for="TaxId">
+            {{ "TaxId" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="TaxId"
+              id="TaxId"
+              required
+              maxlength="32"
+              [(ngModel)]="order.billingAddress.taxId"
+              #TaxIdModel="ngModel"
+              #TaxIdEl
+            />
+            <abp-validation-summary
+              [control]="TaxIdModel"
+              [controlEl]="TaxIdEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="Address">
+            {{ "Address" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="Address"
+              id="Address"
+              maxlength="500"
+              [(ngModel)]="order.shippingAddress.address"
+              #AddressModel="ngModel"
+              #AddressEl
+            />
+            <abp-validation-summary
+              [control]="AddressModel"
+              [controlEl]="AddressEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="State">
+            {{ "State" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="State"
+              id="State"
+              maxlength="255"
+              [(ngModel)]="order.shippingAddress.state"
+              #StateModel="ngModel"
+              #StateEl
+            />
+            <abp-validation-summary
+              [control]="StateModel"
+              [controlEl]="StateEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="City">
+            {{ "City" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="City"
+              id="City"
+              maxlength="255"
+              [(ngModel)]="order.shippingAddress.city"
+              #CityModel="ngModel"
+              #CityEl
+            />
+            <abp-validation-summary
+              [control]="CityModel"
+              [controlEl]="CityEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="Postcode">
+            {{ "Postcode" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="Postcode"
+              id="Postcode"
+              maxlength="10"
+              [(ngModel)]="order.shippingAddress.postcode"
+              #PostcodeModel="ngModel"
+              #PostcodeEl
+            />
+            <abp-validation-summary
+              [control]="PostcodeModel"
+              [controlEl]="PostcodeEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="Country">
+            {{ "Country" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="Country"
+              id="Country"
+              maxlength="255"
+              [(ngModel)]="order.shippingAddress.country"
+              #CountryModel="ngModel"
+              #CountryEl
+            />
+            <abp-validation-summary
+              [control]="CountryModel"
+              [controlEl]="CountryEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+      </tab>
+    </tabset>
   </div>
   <abp-modal-footer
     [cancelDisabled]="saving"
