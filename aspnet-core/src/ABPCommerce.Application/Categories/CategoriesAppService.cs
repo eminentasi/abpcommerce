@@ -1,6 +1,8 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Domain.Repositories;
+using ABPCommerce.Authorization;
 using ABPCommerce.Catalog.Category;
 using ABPCommerce.Categories.Dto;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace ABPCommerce.Categories
 {
+    [AbpAuthorize(PermissionNames.Pages_Categories)]
     public class CategoriesAppService : AsyncCrudAppService<Category, CategoryDto, int, PagedCategoryResultRequestDto>, ICategoriesAppService
     {
         public CategoriesAppService(IRepository<Category> repository)
@@ -20,6 +23,7 @@ namespace ABPCommerce.Categories
 
         public override async Task<PagedResultDto<CategoryDto>> GetAllAsync(PagedCategoryResultRequestDto input)
         {
+            CheckGetAllPermission();
             var query = Repository.GetAllIncluding(p => p.Translations);
 
             if (!string.IsNullOrEmpty(input.Keyword))
@@ -34,12 +38,14 @@ namespace ABPCommerce.Categories
 
         public override async Task<CategoryDto> GetAsync(EntityDto<int> input)
         {
+            CheckGetPermission();
             var product = await Repository.GetAllIncluding(p => p.Translations).FirstOrDefaultAsync(p => p.Id == input.Id);
             return ObjectMapper.Map<CategoryDto>(product);
         }
 
         public override async Task<CategoryDto> UpdateAsync(CategoryDto input)
         {
+            CheckUpdatePermission();
             var product = await Repository.GetAllIncluding(p => p.Translations)
                 .FirstOrDefaultAsync(p => p.Id == input.Id);
 

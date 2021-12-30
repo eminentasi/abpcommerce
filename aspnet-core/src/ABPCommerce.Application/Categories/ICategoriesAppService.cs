@@ -1,10 +1,9 @@
-﻿using Abp.Application.Services.Dto;
+﻿using Abp.Application.Services;
 using ABPCommerce.Categories.Dto;
-using System.Threading.Tasks;
 
 namespace ABPCommerce.Categories
 {
-    interface ICategoriesAppService
+    public interface ICategoriesAppService : IAsyncCrudAppService<CategoryDto, int, PagedCategoryResultRequestDto>
     {
 
     }

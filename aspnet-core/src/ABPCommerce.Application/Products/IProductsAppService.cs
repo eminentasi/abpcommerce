@@ -1,10 +1,9 @@
-﻿using Abp.Application.Services.Dto;
+﻿using Abp.Application.Services;
 using ABPCommerce.Products.Dto;
-using System.Threading.Tasks;
 
 namespace ABPCommerce.Products
 {
-    interface IProductsAppService
+    public interface IProductsAppService : IAsyncCrudAppService<ProductDto, int, PagedProductResultRequestDto>
     {
 
     }

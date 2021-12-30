@@ -1,10 +1,9 @@
-﻿using Abp.Application.Services.Dto;
+﻿using Abp.Application.Services;
 using ABPCommerce.Orders.Dto;
-using System.Threading.Tasks;
 
 namespace ABPCommerce.Orders
 {
-    interface IOrdersAppService
+    public interface IOrdersAppService : IAsyncCrudAppService<OrderDto, int, PagedOrderResultRequestDto>
     {
 
     }

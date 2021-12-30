@@ -63,15 +63,15 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                 'fas fa-users',
                 'Pages.Users'
             ),
-            new MenuItem(this.l('Catalog'), '', 'fas fa-store', '', [
-                new MenuItem(this.l('Categories'), '/app/categories', 'fas fa-swatchbook', ''),
-                new MenuItem(this.l('Products'), '/app/products', 'fas fa-tags', '')
+            new MenuItem(this.l('Catalog'), '', 'fas fa-store', 'Pages.Catalog', [
+                new MenuItem(this.l('Categories'), '/app/categories', 'fas fa-swatchbook', 'Pages.Categories'),
+                new MenuItem(this.l('Products'), '/app/products', 'fas fa-tags', 'Pages.Products')
             ]),
             new MenuItem(
                 this.l('Orders'),
                 '/app/orders',
                 'fas fa-shopping-bag',
-                ''
+                'Pages.Orders'
             ),
         ];
     }
