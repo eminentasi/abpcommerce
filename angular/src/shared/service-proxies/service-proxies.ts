@@ -4289,6 +4289,7 @@ export interface IPermissionDtoListResultDto {
 export class ProductDto implements IProductDto {
     id: number;
     price: number;
+    salesPrice: number | undefined;
     name: string | undefined;
     categoryId: number | undefined;
     category: CategoryDto;
@@ -4307,6 +4308,7 @@ export class ProductDto implements IProductDto {
         if (_data) {
             this.id = _data["id"];
             this.price = _data["price"];
+            this.salesPrice = _data["salesPrice"];
             this.name = _data["name"];
             this.categoryId = _data["categoryId"];
             this.category = _data["category"] ? CategoryDto.fromJS(_data["category"]) : <any>undefined;
@@ -4329,6 +4331,7 @@ export class ProductDto implements IProductDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["price"] = this.price;
+        data["salesPrice"] = this.salesPrice;
         data["name"] = this.name;
         data["categoryId"] = this.categoryId;
         data["category"] = this.category ? this.category.toJSON() : <any>undefined;
@@ -4351,6 +4354,7 @@ export class ProductDto implements IProductDto {
 export interface IProductDto {
     id: number;
     price: number;
+    salesPrice: number | undefined;
     name: string | undefined;
     categoryId: number | undefined;
     category: CategoryDto;

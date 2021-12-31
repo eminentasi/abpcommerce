@@ -11,6 +11,8 @@ namespace ABPCommerce.Products.Dto
     {
         // Mapped from Product.Price
         public decimal Price { get; set; }
+        // Mapped from Product.SalesPrice
+        public decimal? SalesPrice { get; set; }
         // Mapped from ProductTranslation.Name
         public string Name { get; set; }
         public int? CategoryId { get; set; }
