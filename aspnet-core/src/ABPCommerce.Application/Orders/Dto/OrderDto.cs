@@ -3,6 +3,7 @@ using Abp.AutoMapper;
 using ABPCommerce.OrderManagement.Order;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ABPCommerce.Orders.Dto
 {
@@ -11,6 +12,8 @@ namespace ABPCommerce.Orders.Dto
     {
         public DateTime OrderDate { get; set; }
         public OrderStatus Status { get; set; }
+        [MaxLength(Order.MaxNotesLength)]
+        public string Notes { get; set; }
 
         public ShippingAddressDto ShippingAddress { get; set; }
         public BillingAddressDto BillingAddress { get; set; }
