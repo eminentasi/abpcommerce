@@ -84,7 +84,7 @@
               <td>{{item.product.name}}</td>
               <td>{{item.quantity}}</td>
               <td>{{item.unitPrice}}</td>
-              <td>{{item.unitPrice | currency }}</td>
+              <td>{{(item.unitPrice * item.quantity) | currency }}</td>
             </tr>
           </tbody>
           <tfoot>
