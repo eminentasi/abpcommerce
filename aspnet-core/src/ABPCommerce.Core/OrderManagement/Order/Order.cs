@@ -9,8 +9,8 @@ namespace ABPCommerce.OrderManagement.Order
     {
         public const int MaxNotesLength = 500;
 
-        public DateTime OrderDate { get; set; }
         public OrderStatus Status { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
         [MaxLength(MaxNotesLength)]
         public string Notes { get; set; }
         public Shipping.ShippingAddress ShippingAddress { get; set; }

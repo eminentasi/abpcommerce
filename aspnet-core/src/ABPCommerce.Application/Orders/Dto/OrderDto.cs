@@ -10,8 +10,8 @@ namespace ABPCommerce.Orders.Dto
     [AutoMap(typeof(Order))]
     public class OrderDto : FullAuditedEntityDto
     {
-        public DateTime OrderDate { get; set; }
         public OrderStatus Status { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
         [MaxLength(Order.MaxNotesLength)]
         public string Notes { get; set; }
 

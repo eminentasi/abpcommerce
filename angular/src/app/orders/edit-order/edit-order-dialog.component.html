@@ -5,35 +5,46 @@
   (ngSubmit)="save()"
 >
   <abp-modal-header
-    [title]="'EditOrder' | localize"
+    [title]="'EditOrder#' + order.id | localize"
     (onCloseClick)="bsModalRef.hide()"
   ></abp-modal-header>
   <div class="modal-body">
     <tabset>
       <tab [heading]="'OrderDetails' | localize" class="pt-3 px-2">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="form-group required">
               <label class="col-form-label" for="OrderDate">
                 {{ "OrderDate" | localize }}
               </label>
                 <input
                   type="datetime"
-                  class="form-control"
+                  class="form-control disabled"
                   name="OrderDate"
                   id="OrderDate"
                   required
-                  [(ngModel)]="order.orderDate"
-                  #OrderDateModel="ngModel"
-                  #OrderDateEl
+                  readonly
+                  [value]="order.creationTime | date:'medium'"
                 />
-                <abp-validation-summary
-                  [control]="OrderDateModel"
-                  [controlEl]="OrderDateEl"
-                ></abp-validation-summary>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
+            <label class="col-form-label" for="paymentMethod">
+              {{ "Payment Method" | localize }}
+            </label>
+            <span id="paymentMethod">
+              <input
+                  type="text"
+                  class="form-control disabled"
+                  name="paymentMethod"
+                  id="paymentMethod"
+                  required
+                  readonly
+                  [value]="AppPaymentMethod.getName(order.paymentMethod) | localize"
+                />
+            </span>  
+          </div>
+          <div class="col-md-4">
             <div class="form-group required">
               <label class="col-form-label" for="Status">
                 {{ "Status" | localize }}
@@ -46,11 +57,11 @@
                   #StatusModel="ngModel"
                   #StatusEl
                 >
-                  <option [value]="AppOrderStatus.Pending">{{ AppOrderStatus.getName(AppOrderStatus.Pending) }}</option>
-                  <option [value]="AppOrderStatus.Processing">{{ AppOrderStatus.getName(AppOrderStatus.Processing) }}</option>
-                  <option [value]="AppOrderStatus.Shipping">{{ AppOrderStatus.getName(AppOrderStatus.Shipping) }}</option>
-                  <option [value]="AppOrderStatus.Completed">{{ AppOrderStatus.getName(AppOrderStatus.Completed) }}</option>
-                  <option [value]="AppOrderStatus.Returned">{{ AppOrderStatus.getName(AppOrderStatus.Returned) }}</option>
+                  <option [value]="AppOrderStatus.Pending">{{ AppOrderStatus.getName(AppOrderStatus.Pending) | localize}}</option>
+                  <option [value]="AppOrderStatus.Processing">{{ AppOrderStatus.getName(AppOrderStatus.Processing) | localize}}</option>
+                  <option [value]="AppOrderStatus.Shipping">{{ AppOrderStatus.getName(AppOrderStatus.Shipping) | localize}}</option>
+                  <option [value]="AppOrderStatus.Completed">{{ AppOrderStatus.getName(AppOrderStatus.Completed) | localize}}</option>
+                  <option [value]="AppOrderStatus.Returned">{{ AppOrderStatus.getName(AppOrderStatus.Returned) | localize}}</option>
                 </select>
                 <abp-validation-summary
                   [control]="StatusModel"
@@ -62,23 +73,38 @@
         <table class="table table-head-fixed">
           <thead>
             <tr>
-              <td>{{'Product' | localize}}</td>
-              <td>{{'UnitPrice' | localize}}</td>
-              <td>{{'Quantity' | localize}}</td>
-              <td>{{'Subtotal' | localize}}</td>
+              <th>{{'Product' | localize}}</th>
+              <th>{{'Quantity' | localize}}</th>
+              <th>{{'UnitPrice' | localize}}</th>
+              <th>{{'Subtotal' | localize}}</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+            <tr *ngFor="let item of order.orderDetails">
+              <td>{{item.product.name}}</td>
+              <td>{{item.quantity}}</td>
+              <td>{{item.unitPrice}}</td>
+              <td>{{item.unitPrice | currency }}</td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2"></td>
+              <td><strong>{{'Total' | localize}}</strong> </td>
+              <td><strong>{{total | currency }}</strong> </td>
+            </tr>
+          </tfoot>
         </table>
+        <div class="form-group">
+          <label for="order_notes">
+            {{'Notes' | localize}}
+          </label>
+          <textarea name="order_notes" id="order_notes" cols="30" rows="5"
+                    class="form-control"
+                    [(ngModel)]="order.notes"></textarea>
+        </div>
       </tab>
-      <tab [heading]="'ShippingAddress' | localize" class="pt-3 px-2">
+      <tab [heading]="'ShippingAddress' | localize" class="pt-3 px-2" *ngIf="order.shippingAddress">
         <div class="form-group row required">
           <label class="col-md-3 col-form-label" for="FirstName">
             {{ "FirstName" | localize }}
@@ -125,7 +151,7 @@
         </div>
         <div class="form-group row">
           <label class="col-md-3 col-form-label" for="CompanyName">
-            {{ "CompanyName" | localize }}
+            {{ "Company Name" | localize }}
           </label>
           <div class="col-md-9">
             <input
@@ -134,7 +160,7 @@
               name="CompanyName"
               id="CompanyName"
               maxlength="500"
-              [(ngModel)]="order.shippingAddress.lastName"
+              [(ngModel)]="order.shippingAddress.companyName"
               #CompanyNameModel="ngModel"
               #CompanyNameEl
             />
@@ -233,24 +259,22 @@
             {{ "Country" | localize }}
           </label>
           <div class="col-md-9">
-            <input
-              type="text"
-              class="form-control"
-              name="Country"
-              id="Country"
-              maxlength="255"
-              [(ngModel)]="order.shippingAddress.country"
-              #CountryModel="ngModel"
-              #CountryEl
-            />
+            <select class="form-control"
+                    name="country"
+                    id="country"
+                    [(ngModel)]="order.shippingAddress.country"
+                    #countryModel="ngModel"
+                    #countryEl>
+              <option *ngFor="let country of CountryISO | keyvalue" [value]="country.key">{{ country.key }}</option>
+            </select>
             <abp-validation-summary
-              [control]="CountryModel"
-              [controlEl]="CountryEl"
+              [control]="countryModel"
+              [controlEl]="countryEl"
             ></abp-validation-summary>
           </div>
         </div>
       </tab>
-      <tab [heading]="'BillingAddress' | localize" class="pt-3 px-2">
+      <tab [heading]="'BillingAddress' | localize" class="pt-3 px-2" *ngIf="order.billingAddress">
         <div class="form-group row required">
           <label class="col-md-3 col-form-label" for="FirstName">
             {{ "FirstName" | localize }}
@@ -263,7 +287,7 @@
               id="FirstName"
               required
               maxlength="255"
-              [(ngModel)]="order.shippingAddress.firstName"
+              [(ngModel)]="order.billingAddress.firstName"
               #FirstNameModel="ngModel"
               #FirstNameEl
             />
@@ -285,7 +309,7 @@
               id="LastName"
               required
               maxlength="255"
-              [(ngModel)]="order.shippingAddress.lastName"
+              [(ngModel)]="order.billingAddress.lastName"
               #LastNameModel="ngModel"
               #LastNameEl
             />
@@ -297,7 +321,7 @@
         </div>
         <div class="form-group row">
           <label class="col-md-3 col-form-label" for="CompanyName">
-            {{ "CompanyName" | localize }}
+            {{ "Company Name" | localize }}
           </label>
           <div class="col-md-9">
             <input
@@ -306,7 +330,7 @@
               name="CompanyName"
               id="CompanyName"
               maxlength="500"
-              [(ngModel)]="order.shippingAddress.lastName"
+              [(ngModel)]="order.billingAddress.companyName"
               #CompanyNameModel="ngModel"
               #CompanyNameEl
             />
@@ -316,7 +340,7 @@
             ></abp-validation-summary>
           </div>
         </div>
-        <div class="form-group row required">
+        <div class="form-group row">
           <label class="col-md-3 col-form-label" for="TaxId">
             {{ "TaxId" | localize }}
           </label>
@@ -326,7 +350,6 @@
               class="form-control"
               name="TaxId"
               id="TaxId"
-              required
               maxlength="32"
               [(ngModel)]="order.billingAddress.taxId"
               #TaxIdModel="ngModel"
@@ -338,6 +361,50 @@
             ></abp-validation-summary>
           </div>
         </div>
+        <div class="form-group row required">
+          <label class="col-md-3 col-form-label" for="email">
+            {{ "Email" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              id="email"
+              required
+              maxlength="256"
+              [(ngModel)]="order.billingAddress.email"
+              #emailModel="ngModel"
+              #emailEl
+            />
+            <abp-validation-summary
+              [control]="emailModel"
+              [controlEl]="emailEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row required">
+          <label class="col-md-3 col-form-label" for="phone">
+            {{ "Phone" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="tel"
+              class="form-control"
+              name="phone"
+              id="phone"
+              required
+              maxlength="32"
+              [(ngModel)]="order.billingAddress.phone"
+              #phoneModel="ngModel"
+              #phoneEl
+            />
+            <abp-validation-summary
+              [control]="phoneModel"
+              [controlEl]="phoneEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
         <div class="form-group row">
           <label class="col-md-3 col-form-label" for="Address">
             {{ "Address" | localize }}
@@ -349,7 +416,7 @@
               name="Address"
               id="Address"
               maxlength="500"
-              [(ngModel)]="order.shippingAddress.address"
+              [(ngModel)]="order.billingAddress.address"
               #AddressModel="ngModel"
               #AddressEl
             />
@@ -370,7 +437,7 @@
               name="State"
               id="State"
               maxlength="255"
-              [(ngModel)]="order.shippingAddress.state"
+              [(ngModel)]="order.billingAddress.state"
               #StateModel="ngModel"
               #StateEl
             />
@@ -391,7 +458,7 @@
               name="City"
               id="City"
               maxlength="255"
-              [(ngModel)]="order.shippingAddress.city"
+              [(ngModel)]="order.billingAddress.city"
               #CityModel="ngModel"
               #CityEl
             />
@@ -412,7 +479,7 @@
               name="Postcode"
               id="Postcode"
               maxlength="10"
-              [(ngModel)]="order.shippingAddress.postcode"
+              [(ngModel)]="order.billingAddress.postcode"
               #PostcodeModel="ngModel"
               #PostcodeEl
             />
@@ -427,19 +494,17 @@
             {{ "Country" | localize }}
           </label>
           <div class="col-md-9">
-            <input
-              type="text"
-              class="form-control"
-              name="Country"
-              id="Country"
-              maxlength="255"
-              [(ngModel)]="order.shippingAddress.country"
-              #CountryModel="ngModel"
-              #CountryEl
-            />
+            <select class="form-control"
+                    name="country"
+                    id="country"
+                    [(ngModel)]="order.billingAddress.country"
+                    #countryModel="ngModel"
+                    #countryEl>
+              <option *ngFor="let country of CountryISO | keyvalue" [value]="country.key">{{ country.key }}</option>
+            </select>
             <abp-validation-summary
-              [control]="CountryModel"
-              [controlEl]="CountryEl"
+              [control]="countryModel"
+              [controlEl]="countryEl"
             ></abp-validation-summary>
           </div>
         </div>

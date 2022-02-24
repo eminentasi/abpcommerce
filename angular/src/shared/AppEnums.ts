@@ -1,4 +1,4 @@
-import { OrderStatus, TenantAvailabilityState } from '@shared/service-proxies/service-proxies';
+import { OrderStatus, PaymentMethod, TenantAvailabilityState } from '@shared/service-proxies/service-proxies';
 
 
 export class AppTenantAvailabilityState {
@@ -25,6 +25,21 @@ export class AppOrderStatus {
                 return 'Completed';
             case OrderStatus._4:
                 return 'Returned';
+            default:
+                return '';
+        }
+    };
+}
+
+export class AppPaymentMethod {
+    static Transfer: number = PaymentMethod._0;
+    static CreditCard: number = PaymentMethod._1;
+    static getName(val: PaymentMethod) {
+        switch (val) {
+            case PaymentMethod._0:
+                return 'Transfer';
+            case PaymentMethod._1:
+                return 'CreditCard';
             default:
                 return '';
         }

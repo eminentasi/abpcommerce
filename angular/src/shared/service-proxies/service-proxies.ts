@@ -4027,8 +4027,9 @@ export class OrderDto implements IOrderDto {
     isDeleted: boolean;
     deleterUserId: number | undefined;
     deletionTime: moment.Moment | undefined;
-    orderDate: moment.Moment;
     status: OrderStatus;
+    paymentMethod: PaymentMethod;
+    notes: string | undefined;
     shippingAddress: ShippingAddressDto;
     billingAddress: BillingAddressDto;
     orderDetails: OrderDetailsDto[] | undefined;
@@ -4052,8 +4053,9 @@ export class OrderDto implements IOrderDto {
             this.isDeleted = _data["isDeleted"];
             this.deleterUserId = _data["deleterUserId"];
             this.deletionTime = _data["deletionTime"] ? moment(_data["deletionTime"].toString()) : <any>undefined;
-            this.orderDate = _data["orderDate"] ? moment(_data["orderDate"].toString()) : <any>undefined;
             this.status = _data["status"];
+            this.paymentMethod = _data["paymentMethod"];
+            this.notes = _data["notes"];
             this.shippingAddress = _data["shippingAddress"] ? ShippingAddressDto.fromJS(_data["shippingAddress"]) : <any>undefined;
             this.billingAddress = _data["billingAddress"] ? BillingAddressDto.fromJS(_data["billingAddress"]) : <any>undefined;
             if (Array.isArray(_data["orderDetails"])) {
@@ -4081,8 +4083,9 @@ export class OrderDto implements IOrderDto {
         data["isDeleted"] = this.isDeleted;
         data["deleterUserId"] = this.deleterUserId;
         data["deletionTime"] = this.deletionTime ? this.deletionTime.toISOString() : <any>undefined;
-        data["orderDate"] = this.orderDate ? this.orderDate.toISOString() : <any>undefined;
         data["status"] = this.status;
+        data["paymentMethod"] = this.paymentMethod;
+        data["notes"] = this.notes;
         data["shippingAddress"] = this.shippingAddress ? this.shippingAddress.toJSON() : <any>undefined;
         data["billingAddress"] = this.billingAddress ? this.billingAddress.toJSON() : <any>undefined;
         if (Array.isArray(this.orderDetails)) {
@@ -4110,8 +4113,9 @@ export interface IOrderDto {
     isDeleted: boolean;
     deleterUserId: number | undefined;
     deletionTime: moment.Moment | undefined;
-    orderDate: moment.Moment;
     status: OrderStatus;
+    paymentMethod: PaymentMethod;
+    notes: string | undefined;
     shippingAddress: ShippingAddressDto;
     billingAddress: BillingAddressDto;
     orderDetails: OrderDetailsDto[] | undefined;
@@ -4178,6 +4182,11 @@ export enum OrderStatus {
     _2 = 2,
     _3 = 3,
     _4 = 4,
+}
+
+export enum PaymentMethod {
+    _0 = 0,
+    _1 = 1,
 }
 
 export class PermissionDto implements IPermissionDto {
